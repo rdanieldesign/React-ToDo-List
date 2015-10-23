@@ -40,14 +40,14 @@ module.exports = function (grunt) {
         files: ['<%= config.app %>/scripts/main.js'],
         tasks: ['browserify:dist']
       },
-      babel: {
-        files: ['<%= config.app %>/scripts/{,*/}*.js'],
-        tasks: ['babel:dist']
-      },
-      babelTest: {
-        files: ['test/spec/{,*/}*.js'],
-        tasks: ['babel:test', 'test:watch']
-      },
+      // babel: {
+      //   files: ['<%= config.app %>/scripts/{,*/}*.js'],
+      //   tasks: ['babel:dist']
+      // },
+      // babelTest: {
+      //   files: ['test/spec/{,*/}*.js'],
+      //   tasks: ['babel:test', 'test:watch']
+      // },
       gruntfile: {
         files: ['Gruntfile.js']
       },
@@ -153,39 +153,40 @@ module.exports = function (grunt) {
                 }]
              ]
           },
-          files: {
-             // if the source file has an extension of es6 then
-             // we change the name of the source file accordingly.
-             // The result file's extension is always .js
-             "./app/scripts/bundle.js": ["./app/scripts/main.js"]
-          }
+          files: [{
+            expand: true,
+            cwd: '"./app/scripts/main.js"',
+            src: '{,*/}*.js',
+            dest: '.tmp/scripts',
+            ext: '.js'
+          }]
        }
     },
 
     // Compiles ES6 with Babel
-    babel: {
-      options: {
-        sourceMap: true
-      },
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= config.app %>/scripts',
-          src: '{,*/}*.js',
-          dest: '.tmp/scripts',
-          ext: '.js'
-        }]
-      },
-      test: {
-        files: [{
-          expand: true,
-          cwd: 'test/spec',
-          src: '{,*/}*.js',
-          dest: '.tmp/spec',
-          ext: '.js'
-        }]
-      }
-    },
+    // babel: {
+    //   options: {
+    //     sourceMap: true
+    //   },
+    //   dist: {
+    //     files: [{
+    //       expand: true,
+    //       cwd: '<%= config.app %>/scripts',
+    //       src: '{,*/}*.js',
+    //       dest: '.tmp/scripts',
+    //       ext: '.js'
+    //     }]
+    //   },
+    //   test: {
+    //     files: [{
+    //       expand: true,
+    //       cwd: 'test/spec',
+    //       src: '{,*/}*.js',
+    //       dest: '.tmp/spec',
+    //       ext: '.js'
+    //     }]
+    //   }
+    // },
 
     // Compiles Sass to CSS and generates necessary files if requested
     sass: {
@@ -384,14 +385,14 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up build process
     concurrent: {
       server: [
-        'babel:dist',
+        // 'babel:dist',
         'sass'
       ],
       test: [
-        'babel'
+        // 'babel'
       ],
       dist: [
-        'babel',
+        // 'babel',
         'sass',
         'imagemin',
         'svgmin'
